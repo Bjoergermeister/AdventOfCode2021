@@ -1,24 +1,48 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
-fn puzzle1(lines: Vec<String>) -> i32 {
+struct Command {
+    command: String,
+    value: i32,
+}
+
+fn puzzle1(commands: &Vec<Command>) -> i32 {
 
     let mut depth = 0;
     let mut horizontal_position = 0;
 
-    for line in lines {
-        let parts: Vec<&str> = line.split_whitespace().collect(); 
-        let command = parts[0];
-        let value: i32 = parts[1].parse().unwrap();
+    for command in commands {
     
-        if command == "up" {
-            depth -= value;
+        if command.command == "up" {
+            depth -= command.value;
         }
-        else if command == "down" {
-            depth += value;
+        else if command.command == "down" {
+            depth += command.value;
         }
         else {
-            horizontal_position += value;
+            horizontal_position += command.value;
+        }
+    }
+
+    return horizontal_position * depth;
+}
+
+fn puzzle2(commands: &Vec<Command>) -> i32 {
+    let mut depth = 0;
+    let mut horizontal_position = 0;
+    let mut aim = 0;
+
+    for command in commands {
+    
+        if command.command == "up" {
+            aim -= command.value;
+        }
+        else if command.command == "down" {
+            aim += command.value;
+        }
+        else {         
+            horizontal_position += command.value;
+            depth += command.value * aim;
         }
     }
 
@@ -33,8 +57,14 @@ fn main()
 
     let mut lines = Vec::new();
     for line in reader.lines() {
-        lines.push(line.unwrap());
+
+        //Split line in command and value
+        let line_string = line.unwrap();
+        let parts: Vec<&str> = line_string.split_whitespace().collect();         
+        let command = Command { command: parts[0].to_string(), value: parts[1].parse().unwrap() };
+        lines.push(command);
     }
 
-    println!("Puzzle 1: {}", puzzle1(lines));
+    println!("Puzzle 1: {}", puzzle1(&lines));
+    println!("Puzzle 2: {}", puzzle2(&lines));
 }
