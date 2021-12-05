@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub struct Board {
     field: [i32; 25],
 }

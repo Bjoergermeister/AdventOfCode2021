@@ -4,13 +4,30 @@ use std::io::{ BufRead, BufReader };
 mod board;
 use board::*;
 
-fn puzzle1(numbers_to_draw: &Vec<i32>, boards: &mut Vec<Board>) -> i32 {
+fn puzzle1(numbers_to_draw: &Vec<i32>, mut boards: Vec<Board>) -> i32 {
     for number in numbers_to_draw {
         for board in &mut *boards {
             board.remove_drawn_number(*number);
             if board.is_winner() {
                 return board.get_score() * number;
             }
+        }
+    }
+    return 0;
+}
+
+fn puzzle2(numbers_to_draw: &Vec<i32>, mut boards: Vec<Board>) -> i32 {
+    for number in numbers_to_draw {        
+        for i in (0..boards.len()).rev() { //Looping from back so objects can be removed from vector without skipping elements
+            boards[i].remove_drawn_number(*number);
+            if boards[i].is_winner() == false {
+                continue;
+            }
+            
+            if boards.len() == 1 {
+                return boards[i].get_score() * number;
+            }
+            boards.remove(i);              
         }
     }
     return 0;
@@ -48,5 +65,6 @@ fn main(){
         }
     }
 
-    println!("Puzzle 1: {}", puzzle1(&numbers_to_draw, &mut boards));
+    println!("Puzzle 1: {}", puzzle1(&numbers_to_draw, boards.clone()));
+    println!("Puzzle 2: {}", puzzle2(&numbers_to_draw, boards.clone()));
 } 
