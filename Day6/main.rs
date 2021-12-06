@@ -1,8 +1,8 @@
 use std::fs::File;
 use std::io::{ BufRead, BufReader };
 
-fn puzzle1(mut laternfish: [i32; 9]) -> i32 {
-    for i in 1..=80 {
+fn calculate_laternfish_growth(mut laternfish: [i64; 9], days: i32) -> i64 {
+    for _i in 1..=days {
         let laternfish_at_zero_days = laternfish[0];
         for i in 0..=7 {
             laternfish[i] = laternfish[i + 1];
@@ -24,12 +24,13 @@ fn main() {
     let mut buf_reader = BufReader::new(file);
 
     let mut line: String = String::from(""); 
-    buf_reader.read_line(&mut line);
+    let _result = buf_reader.read_line(&mut line);
 
-    let mut laternfish: [i32; 9] = [0; 9];
+    let mut laternfish: [i64; 9] = [0; 9];
     for number in line.split(",") {
-        laternfish[number.parse::<i32>().unwrap() as usize] += 1;
+        laternfish[number.parse::<i64>().unwrap() as usize] += 1;
     }
 
-    println!("Puzzle 1: {}", puzzle1(laternfish.clone()));
+    println!("Puzzle 1: {}", calculate_laternfish_growth(laternfish.clone(), 80));
+    println!("Puzzle 2: {}", calculate_laternfish_growth(laternfish.clone(), 256));
 }
