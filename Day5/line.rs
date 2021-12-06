@@ -10,12 +10,12 @@ impl Line {
         return Self { x1, y1, x2, y2 };
     }
 
-    pub fn is_vertical(&self) -> bool {
-        return self.x1 == self.x2;
-    }
-
-    pub fn is_horizontal(&self) -> bool {
-        return self.y1 == self.y2;
+    pub fn len(&self) -> i32 {
+        if self.x1 == self.x2 {
+            return (self.y2 - self.y1).abs();
+        }else{
+            return (self.x2 - self.x1).abs();
+        }
     }
 
     pub fn is_diagonal(&self) -> bool {
