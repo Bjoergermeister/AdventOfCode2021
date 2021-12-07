@@ -2,21 +2,17 @@ use std::fs::File;
 use std::io::{ BufRead, BufReader };
 use std::cmp;
 
-fn puzzle1(numbers: &Vec<i32>) -> i32 {
-    let mut min = numbers[0];
-    let mut max = numbers[0];
-
-    //Find min and max number
-    for i in 0..numbers.len() {
-        min = cmp::min(min, numbers[i]);
-        max = cmp::max(max, numbers[i]);
-    }
-
-    let mut lowest_fuel_cost = 1000000;
+fn calculate(numbers: &Vec<i32>, min: i32, max: i32, use_more_fuel: bool) -> i32 {
+    let mut lowest_fuel_cost = std::i32::MAX;
     for i in min..=max {
         let mut current_fuel_cost = 0;
-        for j in 0..numbers.len() {
-            current_fuel_cost += (numbers[j] - i).abs();
+        for j in 0..numbers.len() {            
+            if use_more_fuel {
+                let normale_fuel_cost = (numbers[j] - i).abs();
+                current_fuel_cost += (normale_fuel_cost * (normale_fuel_cost + 1)) / 2;
+            } else {
+                current_fuel_cost += (numbers[j] - i).abs();
+            }         
         }
 
         if current_fuel_cost < lowest_fuel_cost {
@@ -25,7 +21,6 @@ fn puzzle1(numbers: &Vec<i32>) -> i32 {
     }
 
     return lowest_fuel_cost;
-
 }
 
 fn main() {
@@ -36,10 +31,16 @@ fn main() {
     let _result = buf_reader.read_line(&mut line);
 
     let mut numbers: Vec<i32> = Vec::new();
+    let mut min = i32::MAX;
+    let mut max = 0;
     for number in line.split(",") {
-        numbers.push(number.parse::<i32>().unwrap());
+        let number_as_int = number.parse::<i32>().unwrap();
+        min = cmp::min(min, number_as_int);
+        max = cmp::max(max, number_as_int);
+        numbers.push(number_as_int);
+
     }
 
-    println!("Puzzle 1: {}", puzzle1(&numbers));
-
+    println!("Puzzle 1: {}", calculate(&numbers, min, max, false));
+    println!("Puzzle 2: {}", calculate(&numbers, min, max, true));
 }
