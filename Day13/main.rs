@@ -15,36 +15,39 @@ fn count_dots(paper: &Vec<i32>, width: i32, height: i32) -> i32 {
     count
 }
 
-fn puzzle1(paper: &mut Vec<i32>, width: i32, height: i32, instruction: (char, i32)) -> i32 {
-    let axis: char = instruction.0;
-    let number: i32 = instruction.1;
-
-    if axis == 'x' {
-        for x in 0..number {
-            for y in 0..height {
-                let new_position = (y * width + x) as usize;
-                let old_position = (y * width + (number * 2 - x)) as usize;
-                if paper[old_position] == 1 {
-                    paper[new_position] = paper[old_position];
-                    paper[old_position] = 0;
+fn fold(paper: &mut Vec<i32>, width: i32, height: i32, instructions: Vec<(char, i32)>) {
+    for i in 0..instructions.len(){
+        let axis: char = instructions[i].0;
+        let number: i32 = instructions[i].1;
+    
+        if axis == 'x' {
+            for x in 0..number {
+                for y in 0..height {
+                    let new_position = (y * width + x) as usize;
+                    let old_position = (y * width + (number * 2 - x)) as usize;
+                    if paper[old_position] == 1 {
+                        paper[new_position] = paper[old_position];
+                        paper[old_position] = 0;
+                    }
                 }
             }
         }
-    }
-    if axis == 'y' {
-        for x in 0..width {
-            for y in 0..number {
-                let new_position = (y * width + x) as usize;
-                let old_position = ((number * 2 - y) * width + x) as usize;
-                if paper[old_position] == 1 {
-                    paper[new_position] = paper[old_position];
-                    paper[old_position] = 0;
+        if axis == 'y' {
+            for x in 0..width {
+                for y in 0..number {
+                    let new_position = (y * width + x) as usize;
+                    let old_position = ((number * 2 - y) * width + x) as usize;
+                    if paper[old_position] == 1 {
+                        paper[new_position] = paper[old_position];
+                        paper[old_position] = 0;
+                    }
                 }
             }
         }
+        if i == 0 {
+            println!("Puzzle 1: {}", count_dots(paper, width, height))
+        }
     }
-
-    count_dots(paper, width, height)
 }
 
 fn main(){
@@ -104,5 +107,18 @@ fn main(){
         paper[position] = 1;
     }
 
-    println!("Puzzle 1: {}", puzzle1(&mut paper, max_x, max_y, fold_instructions[0]));
+    fold(&mut paper, max_x, max_y, fold_instructions);
+
+    println!("Puzzle 2:");
+    for y in 0..=5 {
+        for x in 0..=38 {
+            let position = (y * max_x + x) as usize;
+            if paper[position] == 1 {
+                print!("#");
+            }else{
+                print!(".")
+            }
+        }
+        println!("");
+    }
 }
