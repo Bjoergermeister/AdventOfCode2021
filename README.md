@@ -18,7 +18,7 @@ Day 10: <span style="color:yellow">&#11088;&#11088;</span>\
 Day 11: <span style="color:yellow"></span>\
 Day 12: <span style="color:yellow"></span>\
 Day 13: <span style="color:yellow">&#11088;&#11088;</span>\
-Day 14: <span style="color:yellow"></span>\
+Day 14: <span style="color:yellow">&#11088;</span>\
 Day 15: <span style="color:yellow"></span>\
 Day 16: <span style="color:yellow"></span>\
 Day 17: <span style="color:yellow"></span>\
@@ -30,6 +30,8 @@ Day 22: <span style="color:yellow"></span>\
 Day 23: <span style="color:yellow"></span>\
 Day 24: <span style="color:yellow"></span>\
 Day 25: <span style="color:yellow"></span>
+
+Total: 21 out of 50
 
 # Other years
 
