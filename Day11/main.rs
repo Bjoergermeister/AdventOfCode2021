@@ -33,11 +33,15 @@ fn increase_surrounding_squids(grid: &mut Vec<i32>, position: i32, squids_to_fla
     }
 }
 
-fn puzzle1(grid: &mut Vec<i32>) -> i32 {
-    let mut flashes = 0;
+fn run(grid: &mut Vec<i32>) -> (i32, i32) {
+    let mut flashes_after_100_steps = 0;
+
     let mut flashed_squids = Vec::<usize>::new();
     let mut squids_to_flash = VecDeque::<usize>::new();
-    for _step in 1..=100 {
+
+    let mut step = 0;
+    loop {
+        step += 1;
         //Increase energy level
         for i in 0..grid.len() {
             grid[i] += 1;
@@ -47,6 +51,7 @@ fn puzzle1(grid: &mut Vec<i32>) -> i32 {
         }
         
         //Let squids flash
+        let mut flashes = 0;
         while squids_to_flash.len() > 0 {
             let squid_to_flash = squids_to_flash.pop_front().unwrap();
             if flashed_squids.contains(&squid_to_flash) == false {
@@ -61,10 +66,18 @@ fn puzzle1(grid: &mut Vec<i32>) -> i32 {
             grid[flashed_squids[i]] = 0;
         }
         squids_to_flash.clear();
-        flashed_squids.clear();        
+        flashed_squids.clear(); 
+        
+        if step <= 100 {
+            flashes_after_100_steps += flashes;
+        }
+
+        if flashes == 100 {
+            break;
+        }
     }
-    
-    flashes
+
+    return (flashes_after_100_steps, step);
 }
 
 fn main(){
@@ -80,5 +93,7 @@ fn main(){
         }
     }
 
-    println!("Puzzle 1: {}", puzzle1(&mut grid));
+    let result = run(&mut grid);
+    println!("Puzzle 1: {:?}", result.0);
+    println!("Puzzle 2: {:?}", result.1);
 }
